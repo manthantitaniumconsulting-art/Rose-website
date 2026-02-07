@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Happy Chocolate Day ❤️</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body{
+margin:0;
+font-family:'Segoe UI',sans-serif;
+background:radial-gradient(circle at top,#6b3f2a,#100300);
+color:white;
+overflow:hidden;
+}
+
+header{text-align:center;padding:60px 20px;}
+
+.glow{
+font-size:3rem;
+background:linear-gradient(90deg,#ffcc4d,#ff6f00,#ffd166);
+background-size:300%;
+-webkit-background-clip:text;
+color:transparent;
+animation:shine 4s infinite;
+}
+
+@keyframes shine{to{background-position:300%}}
+
+.card{
+background:rgba(255,255,255,.12);
+backdrop-filter:blur(14px);
+margin:20px auto;
+max-width:800px;
+padding:40px;
+border-radius:30px;
+box-shadow:0 20px 60px rgba(0,0,0,.8);
+text-align:center;
+position:relative;
+z-index:5;
+}
+
+.love-note{font-size:1.2rem}
+
+button{
+margin-top:20px;
+padding:14px 36px;
+border:none;
+border-radius:40px;
+cursor:pointer;
+background:linear-gradient(135deg,#ffcc4d,#ff8c1a);
+font-weight:bold;
+}
+
+.hidden{display:none}
+
+/* floating chocolates */
+
+.choco{
+position:fixed;
+width:90px;
+animation:float linear infinite;
+cursor:pointer;
+}
+
+@keyframes float{from{top:110vh}to{top:-120px}}
+
+/* rain */
+
+.rain span{
+position:fixed;
+top:-20px;
+font-size:22px;
+animation:fall linear infinite;
+}
+
+@keyframes fall{to{transform:translateY(110vh)}}
+
+/* fireworks */
+
+.firework{
+position:fixed;
+width:8px;
+height:8px;
+background:#ffd166;
+border-radius:50%;
+animation:boom 1s ease-out forwards;
+}
+
+@keyframes boom{to{transform:scale(14);opacity:0}}
+
+/* popup love letter */
+
+.modal{
+position:fixed;
+inset:0;
+background:rgba(0,0,0,.7);
+display:flex;
+align-items:center;
+justify-content:center;
+z-index:9999;
+}
+
+.modal-content{
+background:#3b1d0f;
+padding:30px;
+border-radius:20px;
+max-width:400px;
+text-align:center;
+box-shadow:0 0 40px rgba(255,200,120,.7);
+}
+
+/* gift */
+
+.gift{
+font-size:60px;
+cursor:pointer;
+animation:bounce 1s infinite alternate;
+}
+
+@keyframes bounce{to{transform:translateY(-15px)}}
+
+/* music */
+
+.music-btn{
+position:fixed;
+bottom:20px;
+right:20px;
+background:#ffb703;
+border:none;
+border-radius:50px;
+padding:12px 22px;
+font-weight:bold;
+cursor:pointer;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<h1 class="glow">Happy Chocolate Day 🍫</h1>
+</header>
+
+<div class="card">
+
+<p class="love-note">You are my sweetest addiction 💖</p>
+
+<div class="gift" onclick="openLetter()">🎁</div>
+
+<button onclick="celebrate()">Celebrate Love 🎆</button>
+
+</div>
+
+<div class="rain" id="rain"></div>
+
+<audio id="song" loop>
+<source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3">
+</audio>
+
+<button class="music-btn" onclick="toggleMusic()">🎵 Play Song</button>
+
+<!-- Love Letter Popup -->
+<div id="letter" class="modal hidden" onclick="closeLetter()">
+  <div class="modal-content" onclick="event.stopPropagation()">
+    <h3>My Love ❤️</h3>
+    <p>
+      You make my life sweeter than every chocolate in the world.  
+      I love you today, tomorrow and forever 💕
+    </p>
+    <button onclick="closeLetter()">Close 💖</button>
+  </div>
+</div>
+
+<script>
+const chocolates=[
+"assets/gifs/silk.webp",
+"assets/gifs/kitkat.gif",
+"assets/gifs/5star.gif",
+"assets/gifs/munch.gif",
+"assets/gifs/gems.webp"
+];
+
+function spawnChocolate(){
+const c=document.createElement("img");
+c.src=chocolates[Math.floor(Math.random()*chocolates.length)];
+c.className="choco";
+c.style.left=Math.random()*100+"vw";
+c.style.animationDuration=(6+Math.random()*6)+"s";
+document.body.appendChild(c);
+setTimeout(()=>c.remove(),13000);
+}
+setInterval(spawnChocolate,900);
+
+/* rain */
+
+const rain=document.getElementById("rain");
+const drops=["❤️","🍫","🌹"];
+
+function makeRain(){
+const s=document.createElement("span");
+s.innerHTML=drops[Math.floor(Math.random()*drops.length)];
+s.style.left=Math.random()*100+"vw";
+s.style.animationDuration=(3+Math.random()*4)+"s";
+rain.appendChild(s);
+setTimeout(()=>s.remove(),7000);
+}
+setInterval(makeRain,220);
+
+/* fireworks */
+
+function firework(){
+for(let i=0;i<30;i++){
+const f=document.createElement("div");
+f.className="firework";
+f.style.left=Math.random()*100+"vw";
+f.style.top=Math.random()*50+"vh";
+document.body.appendChild(f);
+setTimeout(()=>f.remove(),1000);
+}
+}
+
+function celebrate(){
+firework();
+}
+
+/* love letter */
+
+function openLetter(){
+document.getElementById("letter").classList.remove("hidden");
+firework();
+}
+
+function closeLetter(){
+document.getElementById("letter").classList.add("hidden");
+}
+
+/* music */
+
+const song=document.getElementById("song");
+let playing=false;
+
+function toggleMusic(){
+playing?song.pause():song.play();
+playing=!playing;
+}
+</script>
+
+</body>
+</html>
