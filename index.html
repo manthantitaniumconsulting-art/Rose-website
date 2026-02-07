@@ -9,240 +9,181 @@
 body{
 margin:0;
 font-family:'Segoe UI',sans-serif;
-background:radial-gradient(circle at top,#6b3f2a,#100300);
+background:radial-gradient(circle at top,#6b3f2a,#1b0b05);
 color:white;
 overflow:hidden;
+text-align:center;
 }
 
-header{text-align:center;padding:60px 20px;}
+header{
+padding:60px 20px 30px;
+}
 
-.glow{
+h1{
 font-size:3rem;
-background:linear-gradient(90deg,#ffcc4d,#ff6f00,#ffd166);
-background-size:300%;
--webkit-background-clip:text;
-color:transparent;
-animation:shine 4s infinite;
+color:#ffcc66;
 }
-
-@keyframes shine{to{background-position:300%}}
 
 .card{
 background:rgba(255,255,255,.12);
-backdrop-filter:blur(14px);
-margin:20px auto;
-max-width:800px;
-padding:40px;
+backdrop-filter:blur(12px);
+margin:auto;
+max-width:850px;
+padding:45px;
 border-radius:30px;
-box-shadow:0 20px 60px rgba(0,0,0,.8);
-text-align:center;
-position:relative;
-z-index:5;
+box-shadow:0 25px 50px rgba(0,0,0,.6);
 }
 
-.love-note{font-size:1.2rem}
-
 button{
-margin-top:20px;
 padding:14px 36px;
 border:none;
 border-radius:40px;
+font-size:1.1rem;
 cursor:pointer;
-background:linear-gradient(135deg,#ffcc4d,#ff8c1a);
+background:linear-gradient(135deg,#ffcc4d,#ff9f1c);
 font-weight:bold;
+margin-top:20px;
 }
 
-.hidden{display:none}
+button:hover{transform:scale(1.05)}
+
+footer{margin-top:35px;opacity:.8}
+
+/* popup */
+.modal{
+position:fixed;
+inset:0;
+background:rgba(0,0,0,.6);
+display:flex;
+align-items:center;
+justify-content:center;
+transition:.4s;
+}
+
+.modal.hidden{
+opacity:0;
+pointer-events:none;
+}
+
+.modal-content{
+background:#4b240e;
+padding:40px;
+border-radius:28px;
+max-width:420px;
+box-shadow:0 0 60px gold;
+}
 
 /* floating chocolates */
-
-.choco{
-position:fixed;
-width:90px;
-animation:float linear infinite;
-cursor:pointer;
+.float-choco{
+position:absolute;
+width:80px;
+animation:float 6s ease-in-out infinite;
 }
 
-@keyframes float{from{top:110vh}to{top:-120px}}
+@keyframes float{
+0%,100%{transform:translateY(0)}
+50%{transform:translateY(-30px)}
+}
 
 /* rain */
-
 .rain span{
 position:fixed;
 top:-20px;
 font-size:22px;
-animation:fall linear infinite;
+animation:fall 6s linear infinite;
 }
 
-@keyframes fall{to{transform:translateY(110vh)}}
-
-/* fireworks */
-
-.firework{
-position:fixed;
-width:8px;
-height:8px;
-background:#ffd166;
-border-radius:50%;
-animation:boom 1s ease-out forwards;
-}
-
-@keyframes boom{to{transform:scale(14);opacity:0}}
-
-/* popup love letter */
-
-.modal{
-position:fixed;
-inset:0;
-background:rgba(0,0,0,.7);
-display:flex;
-align-items:center;
-justify-content:center;
-z-index:9999;
-}
-
-.modal-content{
-background:#3b1d0f;
-padding:30px;
-border-radius:20px;
-max-width:400px;
-text-align:center;
-box-shadow:0 0 40px rgba(255,200,120,.7);
-}
-
-/* gift */
-
-.gift{
-font-size:60px;
-cursor:pointer;
-animation:bounce 1s infinite alternate;
-}
-
-@keyframes bounce{to{transform:translateY(-15px)}}
-
-/* music */
-
-.music-btn{
-position:fixed;
-bottom:20px;
-right:20px;
-background:#ffb703;
-border:none;
-border-radius:50px;
-padding:12px 22px;
-font-weight:bold;
-cursor:pointer;
+@keyframes fall{
+to{transform:translateY(110vh)}
 }
 </style>
 </head>
 
 <body>
 
+<audio id="song" loop>
+<source src="song.mp3" type="audio/mpeg">
+</audio>
+
 <header>
-<h1 class="glow">Happy Chocolate Day 🍫</h1>
+<h1>Happy Chocolate Day 🍫</h1>
+<p>To the sweetest girl in my life 💕</p>
 </header>
 
 <div class="card">
+<p>
+You make my life sweeter than every chocolate in the world.  
+Your smile melts my heart every day 💖
+</p>
 
-<p class="love-note">You are my sweetest addiction 💖</p>
-
-<div class="gift" onclick="openLetter()">🎁</div>
-
-<button onclick="celebrate()">Celebrate Love 🎆</button>
-
+<button onclick="openLetter()">Celebrate Love 💝</button>
+<button onclick="toggleMusic()">🎵 Play / Pause Song</button>
 </div>
 
+<footer>Made with ❤️ just for you</footer>
+
+<!-- popup -->
+<div id="letter" class="modal hidden">
+<div class="modal-content">
+<h2>My Love ❤️</h2>
+<p>
+I may not always bring chocolates...  
+But I promise to bring love, laughter & happiness forever 💕
+</p>
+<button onclick="closeLetter()">Close 💖</button>
+</div>
+</div>
+
+<!-- rain container -->
 <div class="rain" id="rain"></div>
 
-<audio id="song" loop>
-<source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3">
-</audio>
-
-<button class="music-btn" onclick="toggleMusic()">🎵 Play Song</button>
-
-<!-- Love Letter Popup -->
-<div id="letter" class="modal hidden" onclick="closeLetter()">
-  <div class="modal-content" onclick="event.stopPropagation()">
-    <h3>My Love ❤️</h3>
-    <p>
-      You make my life sweeter than every chocolate in the world.  
-      I love you today, tomorrow and forever 💕
-    </p>
-    <button onclick="closeLetter()">Close 💖</button>
-  </div>
-</div>
-
 <script>
-const chocolates=[
-"assets/gifs/silk.webp",
-"assets/gifs/kitkat.gif",
-"assets/gifs/5star.gif",
-"assets/gifs/munch.gif",
-"assets/gifs/gems.webp"
-];
+const song=document.getElementById("song");
 
-function spawnChocolate(){
-const c=document.createElement("img");
-c.src=chocolates[Math.floor(Math.random()*chocolates.length)];
-c.className="choco";
-c.style.left=Math.random()*100+"vw";
-c.style.animationDuration=(6+Math.random()*6)+"s";
-document.body.appendChild(c);
-setTimeout(()=>c.remove(),13000);
+function toggleMusic(){
+song.paused ? song.play() : song.pause();
 }
-setInterval(spawnChocolate,900);
-
-/* rain */
-
-const rain=document.getElementById("rain");
-const drops=["❤️","🍫","🌹"];
-
-function makeRain(){
-const s=document.createElement("span");
-s.innerHTML=drops[Math.floor(Math.random()*drops.length)];
-s.style.left=Math.random()*100+"vw";
-s.style.animationDuration=(3+Math.random()*4)+"s";
-rain.appendChild(s);
-setTimeout(()=>s.remove(),7000);
-}
-setInterval(makeRain,220);
-
-/* fireworks */
-
-function firework(){
-for(let i=0;i<30;i++){
-const f=document.createElement("div");
-f.className="firework";
-f.style.left=Math.random()*100+"vw";
-f.style.top=Math.random()*50+"vh";
-document.body.appendChild(f);
-setTimeout(()=>f.remove(),1000);
-}
-}
-
-function celebrate(){
-firework();
-}
-
-/* love letter */
 
 function openLetter(){
 document.getElementById("letter").classList.remove("hidden");
-firework();
 }
 
 function closeLetter(){
 document.getElementById("letter").classList.add("hidden");
 }
 
-/* music */
+/* hearts + chocolates rain */
+const rain=document.getElementById("rain");
+const icons=["❤️","🍫"];
 
-const song=document.getElementById("song");
-let playing=false;
+function drop(){
+const s=document.createElement("span");
+s.innerHTML=icons[Math.floor(Math.random()*icons.length)];
+s.style.left=Math.random()*100+"vw";
+s.style.animationDuration=(4+Math.random()*3)+"s";
+rain.appendChild(s);
+setTimeout(()=>s.remove(),7000);
+}
+setInterval(drop,200);
 
-function toggleMusic(){
-playing?song.pause():song.play();
-playing=!playing;
+/* floating chocolate images */
+const images=[
+"Silk.webp",
+"silk2.webp",
+"bubbly.webp",
+"bubble.webp",
+"5star.gif",
+"kitkat.gif"
+];
+
+for(let i=0;i<8;i++){
+const img=document.createElement("img");
+img.src=images[Math.floor(Math.random()*images.length)];
+img.className="float-choco";
+img.style.left=Math.random()*90+"vw";
+img.style.top=Math.random()*90+"vh";
+img.style.animationDuration=(4+Math.random()*4)+"s";
+document.body.appendChild(img);
 }
 </script>
 
