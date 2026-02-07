@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Happy Chocolate Day ❤️</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #3b1d0f, #6b3f2a);
+      color: #fff;
+      overflow-x: hidden;
+    }
+
+    header {
+      text-align: center;
+      padding: 80px 20px 40px;
+    }
+
+    h1 {
+      font-size: 3rem;
+      margin-bottom: 10px;
+    }
+
+    p.subtitle {
+      font-size: 1.3rem;
+      opacity: 0.9;
+    }
+
+    .card {
+      background: rgba(255,255,255,0.1);
+      margin: 30px auto;
+      max-width: 900px;
+      padding: 40px;
+      border-radius: 24px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+      text-align: center;
+    }
+
+    .choco {
+      font-size: 3rem;
+      animation: float 3s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%,100% { transform: translateY(0); }
+      50% { transform: translateY(-15px); }
+    }
+
+    .love-note {
+      font-size: 1.2rem;
+      line-height: 1.8;
+      margin-top: 20px;
+    }
+
+    button {
+      margin-top: 30px;
+      padding: 14px 30px;
+      font-size: 1.1rem;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      background: #ffb703;
+      color: #3b1d0f;
+      font-weight: bold;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 6px 18px rgba(0,0,0,0.4);
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    footer {
+      text-align: center;
+      padding: 40px 20px;
+      opacity: 0.8;
+      font-size: 0.95rem;
+    }
+
+    .hearts span {
+      position: fixed;
+      bottom: -20px;
+      font-size: 20px;
+      animation: rise 6s linear infinite;
+      opacity: 0.8;
+    }
+
+    @keyframes rise {
+      from { transform: translateY(0); opacity: 1; }
+      to { transform: translateY(-110vh); opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Happy Chocolate Day 🍫</h1>
+  <p class="subtitle">To the sweetest girl in my life</p>
+</header>
+
+<div class="card">
+  <div class="choco">🍫🍩🍪</div>
+  <p class="love-note">
+    Just like chocolate makes everything better, you make my life sweeter every single day. 
+    Your smile melts my heart faster than chocolate in the sun. 💕
+  </p>
+
+  <button onclick="showMessage()">Click for a Surprise 💝</button>
+
+  <p id="surprise" class="love-note hidden">
+    I may not always bring you chocolates… but I promise to bring you love, care, laughter, 
+    and a lifetime of happiness. Happy Chocolate Day, my love! ❤️
+  </p>
+</div>
+
+<footer>
+  Made with ❤️ just for you
+</footer>
+
+<div class="hearts" id="hearts"></div>
+
+<script>
+  function showMessage() {
+    document.getElementById('surprise').classList.remove('hidden');
+  }
+
+  const hearts = document.getElementById('hearts');
+
+  function createHeart() {
+    const span = document.createElement('span');
+    span.innerHTML = '❤️';
+    span.style.left = Math.random() * 100 + 'vw';
+    span.style.animationDuration = (4 + Math.random() * 3) + 's';
+    hearts.appendChild(span);
+
+    setTimeout(() => span.remove(), 7000);
+  }
+
+  setInterval(createHeart, 400);
+</script>
+
+</body>
+</html>
