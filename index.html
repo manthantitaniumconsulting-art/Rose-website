@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Happy Chocolate Day ❤️</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <style>
+    body{
+      margin:0;
+      font-family:'Segoe UI',sans-serif;
+      background:radial-gradient(circle at top,#6b3f2a,#1b0b05);
+      color:white;
+      overflow:hidden;
+      text-align:center;
+    }
+
+    header{
+      padding:60px 20px 30px;
+    }
+
+    h1{
+      font-size:3rem;
+      color:#ffcc66;
+      margin: 0 0 10px;
+    }
+
+    .card{
+      background:rgba(255,255,255,.12);
+      backdrop-filter:blur(12px);
+      margin:auto;
+      max-width:850px;
+      padding:45px;
+      border-radius:30px;
+      box-shadow:0 25px 50px rgba(0,0,0,.6);
+      position: relative;
+      z-index: 2; /* keeps card above background layers */
+    }
+
+    button{
+      padding:14px 36px;
+      border:none;
+      border-radius:40px;
+      font-size:1.1rem;
+      cursor:pointer;
+      background:linear-gradient(135deg,#ffcc4d,#ff9f1c);
+      font-weight:bold;
+      margin-top:20px;
+      transition: transform .15s ease;
+    }
+
+    button:hover{transform:scale(1.05)}
+    footer{margin-top:35px;opacity:.8; position: relative; z-index: 2;}
+
+    /* =========================
+       POPUP (MODAL)
+       ========================= */
+    .modal{
+      position:fixed;
+      inset:0;
+      background:rgba(0,0,0,.6);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      transition:.4s;
+      z-index: 9999;          /* ✅ FIX: modal always on top */
+    }
+
+    .modal.hidden{
+      opacity:0;
+      pointer-events:none;
+    }
+
+    .modal-content{
+      background:#4b240e;
+      padding:40px;
+      border-radius:28px;
+      max-width:420px;
+      width: calc(100% - 60px);
+      box-shadow:0 0 60px gold;
+      position: relative;
+      z-index: 10000;         /* ✅ FIX: content above overlay */
+    }
+
+    /* =========================
+       FLOATING CHOCOLATES
+       ========================= */
+    .float-choco{
+      position:absolute;
+      width:80px;
+      animation:float 6s ease-in-out infinite;
+      pointer-events:none;     /* ✅ FIX: do not steal clicks */
+      z-index: 1;              /* keep below modal & card */
+      user-select: none;
+    }
+
+    @keyframes float{
+      0%,100%{transform:translateY(0)}
+      50%{transform:translateY(-30px)}
+    }
+
+    /* =========================
+       HEARTS/CHOCOLATE RAIN
+       ========================= */
+    .rain, .rain span{
+      pointer-events:none;     /* ✅ FIX: rain never blocks clicks */
+    }
+
+    .rain span{
+      position:fixed;
+      top:-20px;
+      font-size:22px;
+      animation:fall 6s linear infinite;
+      z-index: 1;
+      user-select: none;
+    }
+
+    @keyframes fall{
+      to{transform:translateY(110vh)}
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Audio -->
+  <audio id="song" loop>
+    <source src="song.mp3" type="audio/mpeg" />
+  </audio>
+
+  <header>
+    <h1>Happy Chocolate Day 🍫</h1>
+    <p>To the sweetest girl in my life 💕</p>
+  </header>
+
+  <div class="card">
+    <p>
+      You make my life sweeter than every chocolate in the world.<br/>
+      Your smile melts my heart every day 💖
+    </p>
+
+    <button type="button" onclick="openLetter()">Celebrate Love 💝</button>
+    <br/>
+    <button type="button" onclick="toggleMusic()">🎵 Play / Pause Song</button>
+  </div>
+
+  <footer>Made with ❤️ just for you</footer>
+
+  <!-- Modal Popup -->
+  <div id="letter" class="modal hidden" aria-hidden="true">
+    <div class="modal-content" role="dialog" aria-modal="true">
+      <h2>My Love ❤️</h2>
+      <p>
+        I may not always bring chocolates...<br/>
+        But I promise to bring love, laughter &amp; happiness forever 💕
+      </p>
+      <button type="button" onclick="closeLetter()">Close 💖</button>
+    </div>
+  </div>
+
+  <!-- Rain Container -->
+  <div class="rain" id="rain"></div>
+
+  <script>
+    const song = document.getElementById("song");
+
+    function toggleMusic(){
+      if(song.paused){
+        // ✅ prevents autoplay restriction errors from breaking UX
+        song.play().catch(() => {});
+      } else {
+        song.pause();
+      }
+    }
+
+    function openLetter(){
+      const modal = document.getElementById("letter");
+      modal.classList.remove("hidden");
+      modal.setAttribute("aria-hidden", "false");
+    }
+
+    function closeLetter(){
+      const modal = document.getElementById("letter");
+      modal.classList.add("hidden");
+      modal.setAttribute("aria-hidden", "true");
+    }
+
+    // ✅ Close when clicking outside the modal-content
+    document.getElementById("letter").addEventListener("click", (e) => {
+      if(e.target.id === "letter") closeLetter();
+    });
+
+    // ✅ Close on ESC key
+    document.addEventListener("keydown", (e) => {
+      if(e.key === "Escape"){
+        closeLetter();
+      }
+    });
+
+    /* hearts + chocolates rain */
+    const rain = document.getElementById("rain");
+    const icons = ["❤️","🍫"];
+
+    function drop(){
+      const s = document.createElement("span");
+      s.textContent = icons[Math.floor(Math.random()*icons.length)];
+      s.style.left = Math.random()*100 + "vw";
+      s.style.animationDuration = (4 + Math.random()*3) + "s";
+      rain.appendChild(s);
+      setTimeout(() => s.remove(), 7000);
+    }
+    setInterval(drop, 200);
+
+    /* floating chocolate images */
+    const images = [
+      "Silk.webp",
+      "silk2.webp",
+      "bubbly.webp",
+      "bubble.webp",
+      "5star.gif",
+      "kitkat.gif"
+    ];
+
+    for(let i=0;i<8;i++){
+      const img = document.createElement("img");
+      img.src = images[Math.floor(Math.random()*images.length)];
+      img.className = "float-choco";
+      img.style.left = Math.random()*90 + "vw";
+      img.style.top = Math.random()*90 + "vh";
+      img.style.animationDuration = (4 + Math.random()*4) + "s";
+      document.body.appendChild(img);
+    }
+  </script>
+
+</body>
+</html>
